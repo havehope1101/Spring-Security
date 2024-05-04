@@ -1,6 +1,9 @@
 package org.example.bymyself.controller;
 
+import jakarta.validation.Valid;
+import org.example.bymyself.dto.request.ApiResponse;
 import org.example.bymyself.dto.request.UserCreationRequest;
+import org.example.bymyself.dto.request.UserUpdateRequest;
 import org.example.bymyself.entity.User;
 import org.example.bymyself.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +18,30 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    User createUser(@RequestBody UserCreationRequest request){
-        return userService.createRequest(request);
+    ApiResponse<User> createUser(@Valid @RequestBody  UserCreationRequest request){
+        ApiResponse<User> response = new ApiResponse<>();
+        response.setResult(userService.createRequest(request));
+        return response;
     }
 
     @GetMapping
     List<User> getAllUsers(){
         return userService.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    User getUserById(@PathVariable String id){
+        return userService.getUserById(id);
+    }
+
+    @PutMapping("/{id}")
+    User updateUser(@PathVariable String id, @RequestBody UserUpdateRequest request){
+        return userService.updateUser(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    String deleteUser(@PathVariable String id){
+        userService.deleteUser(id);
+        return "User deleted successfully";
     }
 }

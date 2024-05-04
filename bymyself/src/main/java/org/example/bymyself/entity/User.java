@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String username;
     private String password;
